@@ -52,7 +52,7 @@ resMoinsMoins(List, Ress, Result):-
 	N is Num-1,
 	remplacer(List,A,[Ress,N],Result).
 	
-fixList([A, B, C, D, E, F, G, H, X, Y, Z, J], Result):-
+/*fixList([A, B, C, D, E, F, G, H, X, Y, Z, J], Result):-
 	append([], A, Result1),
 	append(Result1, [B], Result2),
 	append(Result2, [C], Result3),
@@ -65,7 +65,7 @@ fixList([A, B, C, D, E, F, G, H, X, Y, Z, J], Result):-
 	append(List1, [Y], List2),
 	append(List2, [Z], List3),
 	append(List3, [J], List4),
-	append(Result8, List4, Result).
+	append(Result8, List4, Result).*/
 
 %Récupérer la ressource dans res a partir du nom
 /*getRes(Num, Res, Result):-
@@ -128,7 +128,7 @@ printP([M,B,PT,J1,J2]):-
 	
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%voir si modèle en BDD pas plus adéquat
+
 
 %Plateau : 
 
@@ -188,28 +188,28 @@ around(P,NP,I1,I2):-
 		I2 is 1;
 		I2 is P + 1),
 	(P==1 ->
-		I1 is NP;
+		I1 is 9;
 		I1 is P - 1).
-		
-Res = [[ble,6],[riz,6],[cacao,6],[cafe,6],[sucre,6],[mais,6]].
 
-		
-play(Move,[M,B,PT,J1,J2], ChoixPAchat, PEnd, [NM,NB,PEnd,NJ1,NJ2]):-
+	
+%Choix concerne achat : est Suivante ou Precedente
+play([M,B,PT,J1,J2],[Joueur1,Choix, Move], [NM,NB,PEnd,NJ1,NJ2]):-
+
 	length(M, Nb),
-	NbP is Nb-3,
-    checkMoveT(PT, Move, NbP, PEnd),
+    checkMoveT(PT, Move, Nb, PEnd),
 	around(PEnd, NbP, I1, I2),
-	(ChoixPAchat == 1 ->
-		Achat is I1, Vente is I2;
-		Achat is I2, Vente is I1),
-	%getP(Achat, M, PAchat),
-	getM(Achat, 1, M, Achete),
-	resMoinsMoins(Res, Achete, NP),
-	resMoinsMoins(M, Achete, ExM),
-	append(J1, Achete, NJ1),
-	getM(Vente, 1, M, Vendu),
-	resMoinsMoins(Res, Vendu, NP),
-	resMoinsMoins(B, Vendu, NB),
-	resMoinsMoins(ExM, Vendu, NM),
-	append(J2, Vendu, NJ2).
+	
+	(Choix == S ->
+		Achat is I2, Vente is I1;
+		Achat is I1, Vente is I2),		
+	
+	getM(Achat,1, M, Achete),
+	getM(Vente,1, M, Vendu).
+	
+	%changerbourse
+	%changermarchandise
+	%changerjoueur.
+	
+changerBourse([[EJete,Val]|Q],EJete,[[EJete,NewVal]|Q]):-NewVal is Val-1,!.
+changerBourse([T|Q],EJete,[T|R]):-changerBourse(Q,EJete,R).
 
